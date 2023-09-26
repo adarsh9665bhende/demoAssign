@@ -1,0 +1,69 @@
+import socket
+
+serverIP = "10.0.1.2"
+dst_ip = str(input("Enter dstIP: "))
+s = socket.socket()
+
+print(dst_ip)
+
+port = 12346
+
+# Establish a connection between destination_ip and port
+s.connect((dst_ip, port))
+
+print("Successfully established Connection")
+
+while True:
+    try:
+        inputrequest = input("Enter the request:")
+        request = inputrequest
+
+        if inputrequest == "quit":
+            print("Ending Program:")
+            s.send('Ending Program'.encode())
+            s.close()
+            break  # Exit the loop if the user enters "quit"
+
+        # Split request by space
+        inputrequest = inputrequest.split(" ")
+
+        # For a valid request, the length of the split must be 3
+        split_length = len(inputrequest)
+
+        if split_length != 3:
+            print("Invalid request: We will consider up to length 3")
+            continue
+
+        if inputrequest[0] == "GET":
+            inputrequest_middle = inputrequest[1]
+            request = f"GET /assignment2/{inputrequest_middle} HTTP/1.1\r\n\r\n"
+
+        elif inputrequest[0] == "PUT":
+            # For PUT, we have to further split inputrequest[1]
+            inputrequest_middle = inputrequest[1].split("/")
+            if len(inputrequest_middle) != 2:
+                print("Invalid request: We will consider only key")
+                continue
+
+            key = inputrequest_middle[0]
+            val = inputrequest_middle[1]
+            request = f"PUT /assignment2/{key}/{val} HTTP/1.1\r\n\r\n"
+
+        elif inputrequest[0] == "DELETE":
+            inputrequest_middle = inputrequest[1]
+            request = f"DELETE /assignment2/{inputrequest_middle} HTTP/1.1\r\n\r\n"
+
+        else:
+            print("Invalid Request: Does not contain GET, PUT, or DELETE")
+            continue
+
+        s.send(request.encode())
+        response = s.recv(1024).decode()
+        print("Received:", response)
+
+    except socket.error as error:
+        print("Connection Closed", error)
+        s.close()
+        break  # Exit the loop on socket error
+
+s.close()
