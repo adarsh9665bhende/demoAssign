@@ -43,22 +43,28 @@ while True:
 
         if inputrequest[0] == "GET":
             inputrequest_middle = inputrequest[1]
+            inputrequest_middle = inputrequest_middle.split("=")
+            if len(inputrequest_middle)!=2:
+               print("INvalid Input:length of middle p[art ius not 2]")
+            else :
+               request = "GET /assignment2/key/val HTTP/1.1\r\n\r\n".format(key = inputrequest_middle)
 
-            request = "GET /assignment2/key/val HTTP/1.1\r\n\r\n".format(key = inputrequest_middle)
+
+           
     
         #s.send(request.encode())
         #print("Received:" + s.recv(1024).decode())
 
         elif inputrequest[0] =="PUT":
             # for put, we have to further split the inputrequest[1]
-            inputrequest_middle = inputrequest[1].split("/")
+            inputrequest_middle = inputrequest[1].split("=")
             # if inputrequest_middle[1] != assignment2, invalid input
             if inputrequest_middle[1] != "assignment2":
                 print("Invalid request: we will consider only key")
                 continue
 
 
-            request = "PUT /assignment2/{key}/{val} HTTP/1.1\r\n\r\n".format(key = inputrequest_middle,val = inputrequest_middle[1])
+            request = "PUT /assignment2/{key}/{val} HTTP/1.1\r\n\r\n".format(key = inputrequest_middle[2],val = inputrequest_middle[1])
             print(request)
             # request =f"PUT /assignment2/{inputrequest_middle[0]}/{inputrequest_middle[1]} HTTP/1.1\r\n\r\n"
             # request = "PUT /assignment2/"
