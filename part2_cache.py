@@ -1,63 +1,68 @@
 import socket
 
-#WRITE CODE HERE:
-#1. Create a KEY-VALUE pairs (Create a dictionary OR Maintain a text file for KEY-VALUES).
-
-
 dst1_ip = str(input('Enter dstTP: '))
+#s = socket.socket(())
 s = socket.socket()
-print ("Socket successfully created")
+print ("SUccessful Creation of Socket:")
 dport1 = 12346
+#s.bind(dst1_ip, dport1)
 s.bind((dst1_ip, dport1))
+
 print ("socket binded to %s" %(dport1))
 s.listen(5)
 print ("socket is listening")
 c, addr = s.accept()
-print ('Got connection from', addr)
+print ('Got connection from:', addr)
 
 #print('Server received '+rcmsg)
-#C.send('Hello client'.encode())
-
 serverIP = "10.0.1.3"
 
 dst_ip = str(input("Enter dstIP: "))
 S = socket.socket()
 print(dst_ip)
 port = 12345
+
+#s.connect((dst_ip,port))
 S.connect((dst_ip, port))
 
-strget = "GET /assignment1?request="
+
+stringget = "GET /assignment1?request="
 http11 = " HTTP/1.1"
-strok = 'HTTP/1.1 200 OK\n\n'
-last = "\r\n\r\n"
-
-map = {}
-x = 0
+stringok = 'HTTP/1.1 200 OK\n\n'
+last_part = "\r\n\r\n"
+#declre responce_cache
+responce_cache = {}
+cache_limit = 0
 keylist = []
-
 rcmsg = c.recv(1024).decode()
 
 while rcmsg:
-	if rcmsg[:len(strget)] == strget and rcmsg[-len(http11 + last):] == http11 + last:
-		sstring = rcmsg[len(strget):-len(http11 + last)]
-		if sstring in map:                  #key
-			a = strok + map[sstring] + last
+    #if rcmsg[:len(stringget)] == stringget and rcmsg[len(http11 + last_part):] == http11 + last_part:
+	if rcmsg[:len(stringget)] == stringget and rcmsg[-len(http11 + last_part):] == http11 + last_part:
+        #secondstring = rcmsg[len(stringget):len(http11 + last_part)]
+		secondstring = rcmsg[len(stringget):-len(http11 + last_part)]
+		if secondstring in responce_cache:  
+            #required key value                
+			final_responce = stringok + responce_cache[secondstring] + last_part
 			c.send(a.encode())
 		else:
-			S.send(sstring.encode())
-			a = S.recv(1024).decode()
-			if x<3:
-				x += 1
+            #s.send(secondstring.encode())
+			S.send(secondstring.encode())
+
+			final_responce = S.recv(1024).decode()
+            #final_responce = S.recv(1024).decode()
+			if cache_limit<3:
+				cache_limit += 1
 			else:
 				b = keylist.pop(0)
-				del map[b]
-			map[sstring] = a
-			keylist.append(sstring)
-			b = strok + a + last
-			c.send(b.encode())
+				del responce_cache[b]
+			responce_cache[secondstring] = a
+			keylist.append(secondstring)
+
+			responce = stringok + final_responce + last_part
+			c.send(responce.encode())
 	else:
-		a = '400 Bad Request\r\n\r\n'
-		c.send(a.encode())
+		final_responce = '400 Bad Request\r\n\r\n'
+		c.send(final_responce.encode())
 
 	rcmsg = c.recv(1024).decode()
-
