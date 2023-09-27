@@ -42,6 +42,8 @@ while True:
 
       #traverse recieved message
       recv_request = recvmsg.split(" ")
+      print(recv_request)
+
       recv_first_part = recv_request[0]
       recv_middle_part = recv_request[1]
       print("Middle PArt Is:",recv_middle_part)
