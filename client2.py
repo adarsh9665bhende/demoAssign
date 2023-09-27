@@ -13,12 +13,12 @@ dport = 12346
 
 # here establish connection between destination_ip and port
 
-while True:
-    try:
-        s.connect((dst_ip, dport))
-        print("connection succe")
-    except socket.error as error:
-        print("connectino failed : ",error)
+
+try:
+    s.connect((dst_ip, dport))
+    print("connection succe")
+except socket.error as error:
+    print("connectino failed : ",error)
 
 
 print("Successfully established Connection")  
