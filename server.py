@@ -20,7 +20,7 @@ s.listen(5)
 print ("socket is listening")
 
 while True:
-  
+
   try:
     c, addr = s.accept()
     print ('Got connection from: ', addr )
@@ -28,18 +28,18 @@ while True:
     while True:
       recvmsg = c.recv(1024).decode()
       print('Server received: '+ recvmsg)
-      
+
 
       #if client quits the session, conncection gets disconnected
       if recvmsg == "quit":
         print('Disconnected : Client has disconnected')
         break
-      
+
        # print('Disconnected : Client disconnected due to an interrupt')
        # break
       if recvmsg == "":
         break
-      
+
       #traverse recieved message
       recv_request = recvmsg.split(" ")
       recv_first_part = recv_request[0]
@@ -63,18 +63,19 @@ while True:
         c.send("HTTP/1.1 200 OK\r\n\r\nPush sucess!".encode())
 
       elif recv_first_part == "DELETE":
-        recv_key = recv_middle_part.split("/")[2]
+        recv_key = recv_middle_part.split("/")
+        recv_key = recv_key[2]
         if recv_key in keyValueDict:
           keyValueDict.pop(recv_key)
           c.send("HTTP/1.1 200 OK\r\n\r\nDelete success!".encode())
         else:
           c.send("HTTP/1.1 404 Not Found\r\n\r\nDelete failure!: Key does not exist".encode())
 
-          
+
       else:
         c.send("HTTP/1.1 400 Bad Request\r\n\r\nInvalid request!: Command not found".encode())
       print("Key Val: ", keyValueDict)
-      
+
     c.close()
   except socket.error as e:
     print("Error: ", e)
