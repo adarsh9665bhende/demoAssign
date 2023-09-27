@@ -1,19 +1,20 @@
 import socket
-import http.server
+#import http.server
 
+#dictionary creation
 keyValueDict = dict()
 
 
 #ip addresses and ports
 serverIP=str(input("Enter Server IP: "))
 dst_ip=serverIP
-dport="123456"
+dport=12346
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print ("Socket successfully created")
 
 s.bind((dst_ip, dport))
-print ("socket binded to %s" %(dport))
+print ("socket binded to %d" %(dport))
 
 s.listen(5)
 print ("socket is listening")
@@ -27,13 +28,13 @@ while True:
     while True:
       recvmsg = c.recv(1024).decode()
       print('Server received: '+ recvmsg)
-      #message has be recieved
+      
 
       #if client quits the session, conncection gets disconnected
       if recvmsg == "quit":
         print('Disconnected : Client has disconnected')
         break
-      #if recvmsg == "KeyboardInterrupt":
+      
        # print('Disconnected : Client disconnected due to an interrupt')
        # break
       if recvmsg == "":
@@ -41,13 +42,13 @@ while True:
       
       #traverse recieved message
       recv_request = recvmsg.split(" ")
-      recv_func = recv_request[0]
-      recv_directory = recv_request[1]
+      recv_first_part = recv_request[0]
+      recv_middle_part = recv_request[1]
 
 
-      #functions GET , PUT , DELETE
-      if recv_func == "GET":
-        recv_key = recv_directory.split("=")[1]
+      #first_parttions GET , PUT , DELETE
+      if recv_first_part == "GET":
+        recv_key = recv_middle_part.split("=")[1]
         if recv_key in keyValueDict :
           msg = "HTTP/1.1 200 OK\r\n\r\n" + keyValueDict[recv_key]
           c.send(msg.encode())
@@ -55,14 +56,14 @@ while True:
           msg = "HTTP/1.1 404 Not Found \r\n\r\n No such key exists!"
           c.send(msg.encode())
 
-      elif recv_func == "PUT":
-        recv_key = recv_directory.split("/")[2]
-        rec_val = recv_directory.split("/")[3]
+      elif recv_first_part == "PUT":
+        recv_key = recv_middle_part.split("/")[2]
+        rec_val = recv_middle_part.split("/")[3]
         keyValueDict[recv_key] = rec_val
         c.send("HTTP/1.1 200 OK\r\n\r\nPush sucess!".encode())
 
-      elif recv_func == "DELETE":
-        recv_key = recv_directory.split("/")[2]
+      elif recv_first_part == "DELETE":
+        recv_key = recv_middle_part.split("/")[2]
         if recv_key in keyValueDict:
           keyValueDict.pop(recv_key)
           c.send("HTTP/1.1 200 OK\r\n\r\nDelete success!".encode())
