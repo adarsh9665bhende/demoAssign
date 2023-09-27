@@ -44,6 +44,7 @@ while True:
       recv_request = recvmsg.split(" ")
       recv_first_part = recv_request[0]
       recv_middle_part = recv_request[1]
+      print("Middle PArt Is:",recv_middle_part)
 
 
       #first_parttions GET , PUT , DELETE
@@ -63,10 +64,15 @@ while True:
         c.send("HTTP/1.1 200 OK\r\n\r\nPush sucess!".encode())
 
       elif recv_first_part == "DELETE":
+        #print("MIddle part:",recv_middle_part)
         recv_key = recv_middle_part.split("/")
-        recv_key = recv_key[2]
-        if recv_key in keyValueDict:
-          keyValueDict.pop(recv_key)
+        print("Splited Middle Part:",recv_key)
+        length = len(recv_key)
+        print("length:",length)
+        if length==3:
+         recv_key_val = recv_key[2] 
+         if recv_key_val in keyValueDict:
+          keyValueDict.pop(recv_key_val)
           c.send("HTTP/1.1 200 OK\r\n\r\nDelete success!".encode())
         else:
           c.send("HTTP/1.1 404 Not Found\r\n\r\nDelete failure!: Key does not exist".encode())
