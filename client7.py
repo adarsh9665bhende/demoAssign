@@ -39,7 +39,7 @@ while True:
      if inputrequest[0] == "GET":
          inputrequest_middle = inputrequest[1]
 
-         request = f"GET /assignment2/{inputrequest_middle} HTTP/1.1\r\n\r\n"
+         request = "GET /assignment2/key/val HTTP/1.1\'r\n\r\n".format(key = inputrequest_middle)
     
      #s.send(request.encode())
      #print("Received:" + s.recv(1024).decode())
