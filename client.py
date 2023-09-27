@@ -52,11 +52,19 @@ while True:
             # for put, we have to further split the inputrequest[1]
             inputrequest_middle = inputrequest[1].split("/")
             # if inputrequest_middle[1] != assignment2, invalid input
-            if inputrequest_middle[1] != assignment2:
+            if inputrequest_middle[1] != "assignment2":
                 print("Invalid request: we will consider only key")
                 continue
 
-            request ="PUT /assignment2/key/val HTTP/1.1\r\n\r\n".format(key=inputrequest_middle[0],val =inputrequest_middle[1])
+
+            request = "PUT /assignment2/{key}/{val} HTTP/1.1\r\n\r\n".format(key = inputrequest_middle,val = inputrequest_middle[1])
+            print(request)
+            # request =f"PUT /assignment2/{inputrequest_middle[0]}/{inputrequest_middle[1]} HTTP/1.1\r\n\r\n"
+            # request = "PUT /assignment2/"
+            # request = request + inputrequest_middle[0]
+            # request = request + "/"
+            # request = request + inputrequest_middle[1]
+            # request =
 
         elif inputrequest[0] =="DELETE":
             inputrequest_middle = inputrequest[1]
