@@ -47,7 +47,7 @@ while True:
             if len(inputrequest_middle)!=2:
                print("INvalid Input:length of middle p[art ius not 2]")
             else :
-               request = "GET /assignment2/key/val HTTP/1.1\r\n\r\n".format(key = inputrequest_middle)
+               request = "GET /assignment2?request={key} HTTP/1.1\r\n\r\n".format(key = inputrequest_middle[1])
 
 
            
