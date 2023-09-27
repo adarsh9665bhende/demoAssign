@@ -52,7 +52,7 @@ while True:
                 print("Invalid request: we will consider only key")
                 continue
 
-            request = f"PUT /assignment2/{inputrequest_middle[0]}/{inputrequest_middle[1]} HTTP/1.1\r\n\r\n"
+            request ="PUT /assignment2/key/val HTTP/1.1\r\n\r\n".format(key=inputrequest_middle[0],val =inputrequest_middle[1])
 
         elif inputrequest[0] =="DELETE":
             inputrequest_middle = inputrequest[1]
