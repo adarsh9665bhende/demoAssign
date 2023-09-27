@@ -1,20 +1,20 @@
 import socket
-import http.server
+#import http.server
 
 #dictionary creation
 keyValueDict = dict()
 
 
 #ip addresses and ports
-#serverIP=str(input("Enter Server IP: "))
+serverIP=str(input("Enter Server IP: "))
 dst_ip=serverIP
-dport=123456
+dport=12346
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print ("Socket successfully created")
 
 s.bind((dst_ip, dport))
-print ("socket binded to %s" %(dport))
+print ("socket binded to %d" %(dport))
 
 s.listen(5)
 print ("socket is listening")
