@@ -74,8 +74,11 @@ while True:
             # request =
 
         elif inputrequest[0] =="DELETE":
-            inputrequest_middle = inputrequest[1]
-            request = "DELETE  /assignment2/key/val HTTP/1.1\r\n\r\n".format(key = inputrequest_middle)
+            inputrequest_middle = inputrequest[2].split("/")
+            length = len(inputrequest_middle)
+            print("length:",length)
+            if length==3:
+             request = "DELETE  /assignment2/{key} HTTP/1.1\r\n\r\n".format(key = inputrequest_middle[2])
             #s.send(request.encode())
             # print("Received:" + s.recv(1024).decode())
     
