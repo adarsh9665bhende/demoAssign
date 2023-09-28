@@ -1,5 +1,5 @@
 import socket
-#WRITE CODE HERE
+
 dst_ip = str(input("Enter Server IP: "))
 
 s = socket.socket()
@@ -14,14 +14,14 @@ print ("socket is listening")
 c, addr = s.accept()
 print ('Got connection from:', addr)
 
-rcmsg = c.recv(1024).decode()
-map = {
+recv_message = c.recv(1024).decode()
+key_dictionary = {
   'key1': 'val1','key2': 'val2','key3': 'val3','key4': 'val4', 'key5': 'val5','key6': 'val6'
 }
-while rcmsg:
-	if rcmsg in map:
-		final_responce = map[rcmsg]
+while recv_message:
+	if recv_message in key_dictionary:
+		final_responce = key_dictionary[recv_message]
 	else:
 		final_responce = 'Error 404: Not found'
 	c.send(final_responce.encode())
-	rcmsg = c.recv(1024).decode()
+	recv_message = c.recv(1024).decode()
