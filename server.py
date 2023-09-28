@@ -75,7 +75,7 @@ while True:
          recv_key_val = recv_key[2] 
          if recv_key_val in keyValueDict:
           keyValueDict.pop(recv_key_val)
-          c.send("HTTP/1.1 200 OK\r\n\r\nDelete success!".encode())
+          c.send("HTTP/1.1 200 OK\r\n\r\nDelete successful".encode())
         else:
           c.send("HTTP/1.1 404 Not Found\r\n\r\nDelete failure!: Key does not exist".encode())
 
