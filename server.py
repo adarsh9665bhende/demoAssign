@@ -3,7 +3,7 @@ import socket
 
 #dictionary creation
 keyValueDict = dict()
-
+keyValueDict ={'key1':'val1','key2':'val2','key3':'val3','key4':'val4','key5':'val5','key6':'val6'}
 
 #ip addresses and ports
 serverIP=str(input("Enter Server IP: "))
